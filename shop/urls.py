@@ -17,6 +17,7 @@ from django.conf.urls import url, include
 import xadmin
 from goods.views import *
 from rest_framework.routers import DefaultRouter
+from rest_framework.authtoken import views
 
 router = DefaultRouter()
 # 商品
@@ -27,6 +28,7 @@ router.register(r'category', CategoryViewSet, base_name='category')
 urlpatterns = [
     url(r'^xadmin/', xadmin.site.urls),
     url(r'^api-auth/', include('rest_framework.urls', namespace='rest_framework')),
+    url(r'^api-token-auth/', views.obtain_auth_token),
 
     #     商品
     url(r'^', include(router.urls)),
