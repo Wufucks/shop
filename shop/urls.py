@@ -14,22 +14,37 @@ Including another URLconf
     2. Add a URL to urlpatterns:  url(r'^blog/', include('blog.urls'))
 """
 from django.conf.urls import url, include
+from rest_framework.documentation import include_docs_urls
+
 import xadmin
 from goods.views import *
 from rest_framework.routers import DefaultRouter
-from rest_framework.authtoken import views
+# from rest_framework.authtoken import views
+from rest_framework_jwt.views import obtain_jwt_token
+
+from user.views import SmsCodeViewSet, UserViewSet
+
+from user_opertion.views import UserViewFavSet
 
 router = DefaultRouter()
 # 商品
 router.register(r'goods', GoodsViewSet, base_name='goods')
 # 商品分类
 router.register(r'category', CategoryViewSet, base_name='category')
+router.register(r'hotsearch', HotSearchWordsViewSet, base_name='hotsearch')
+router.register(r'users', UserViewSet, base_name='users')
+# 短信
+router.register(r'codes', SmsCodeViewSet, base_name='codes')
+router.register(r'userfavs', UserViewFavSet, base_name='userfavs')
 
 urlpatterns = [
     url(r'^xadmin/', xadmin.site.urls),
     url(r'^api-auth/', include('rest_framework.urls', namespace='rest_framework')),
-    url(r'^api-token-auth/', views.obtain_auth_token),
+    url(r'docs/', include_docs_urls(title='超市')),
 
     #     商品
     url(r'^', include(router.urls)),
+    # url(r'^api-token-auth/', views.obtain_auth_token),
+    url(r'^login/', obtain_jwt_token),
+
 ]

@@ -1,5 +1,4 @@
 from django.db.models import Q
-from rest_framework import generics
 import django_filters
 
 from goods.models import Goods

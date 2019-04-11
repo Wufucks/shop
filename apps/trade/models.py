@@ -4,7 +4,10 @@ from django.db import models
 from django.contrib.auth import get_user_model
 
 from goods.models import Goods
+
 User = get_user_model()
+
+
 # Create your models here.
 
 
@@ -60,6 +63,7 @@ class OrderInfo(models.Model):
 
     def __str__(self):
         return str(self.order_sn)
+
 
 class OrderGoods(models.Model):
     """

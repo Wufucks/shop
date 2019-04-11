@@ -9,6 +9,7 @@ https://docs.djangoproject.com/en/1.11/topics/settings/
 For the full list of settings and their values, see
 https://docs.djangoproject.com/en/1.11/ref/settings/
 """
+import datetime
 
 import os
 import sys
@@ -29,17 +30,17 @@ SECRET_KEY = 'hceyb*!jxkf!tp3xigukhss)w+vtu2#8gfnhg@(*r4vmrie8vs'
 DEBUG = True
 
 ALLOWED_HOSTS = ['*']
+AUTH_USER_MODEL = 'user.UserProfile'
 
 # Application definition
 
 INSTALLED_APPS = [
-    'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'apps.user.apps.UserConfig',
+    'user',
     'DjangoUeditor',
     'trade.apps.TradeConfig',
     'user_opertion.apps.UserOpertionConfig',
@@ -134,9 +135,11 @@ USE_TZ = False
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/1.11/howto/static-files/
 
-STATIC_URL = '/static/'
+AUTHENTICATION_BACKENDS = (
+    'user.views.CustomBackend',
+)
 
-AUTH_USER_MODEL = 'user.UserProfile'
+STATIC_URL = '/static/'
 
 MEDIA_URL = "/media/"
 STATICFILES_DIRS = (
@@ -151,7 +154,16 @@ REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': (
         'rest_framework.authentication.BasicAuthentication',
         'rest_framework.authentication.SessionAuthentication',
-        'rest_framework.authentication.TokenAuthentication',
 
     )
 }
+
+JWT_AUTH = {
+    'JWT_EXPIRATION_DELTA': datetime.timedelta(days=7),
+    'JWT_AUTH_HEADER_PREFIX': 'JWT',
+}
+
+# 手机号码正则表达式
+REGEX_MOBILE = "^1[358]\d{9}$|^147\d{8}$|^176\d{8}$"
+
+APIKEY = " "
